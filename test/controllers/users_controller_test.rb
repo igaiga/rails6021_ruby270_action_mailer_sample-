@@ -20,6 +20,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       post users_url, params: { user: { email: @user.email, name: @user.name } }
     end
 
+    invite_email = ActionMailer::Base.deliveries.last
+    assert_equal "登録完了", invite_email.subject
+    assert_equal @user.email, invite_email.to.first
     assert_redirected_to user_url(User.last)
   end
 
